@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Art – Inspired by Kaze</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="logo">FAST ART</div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#sustainability">Sustainability</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home" class="hero">
+    <div class="hero-text">
+      <h1>Reimagining Art with AI</h1>
+      <p>Where machine meets masterpiece</p>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <h2>Featured Works</h2>
+    <p>Pictures I took of the art from some of my favourite artists in the Somerset House</p>
+    <div class="grid">
+      <div class="gallery-item"><img src="img/heart.jpg"><div class="overlay"><a href="#" class="overlay-link">View Heart</a></div></div>
+      <div class="gallery-item"><img src="img/jnese.jpg"><div class="overlay"><a href="#" class="overlay-link">View JNESE</a></div></div>
+      <div class="gallery-item"><img src="img/kitty.jpg"><div class="overlay"><a href="#" class="overlay-link">View Kitty</a></div></div>
+      <div class="gallery-item"><img src="img/monster.jpg"><div class="overlay"><a href="#" class="overlay-link">View Monster</a></div></div>
+      <div class="gallery-item"><img src="img/muse.jpg"><div class="overlay"><a href="#" class="overlay-link">View Muse</a></div></div>
+      <div class="gallery-item"><img src="img/paint.jpg"><div class="overlay"><a href="#" class="overlay-link">View Paint</a></div></div>
+    </div>
+  </section>
+
+  <section id="features" class="section light">
+    <h2>Feature Articles</h2>
+    <div class="features-grid">
+      <article class="feature-card">
+        <h3>The ethics behind AI-generated Art</h3>
+        <p>Exploring the creative boundaries and legal questions of AI-generated imagery.</p>
+        <a href="#">Read more →</a>
+      </article>
+      <article class="feature-card">
+        <h3>Societal perspective with the use of AI and authorship</h3>
+        <p>How artificial creativity reflects—and sometimes reshapes—social biases.</p>
+        <a href="#">Read more →</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="sustainability" class="section">
+    <h2>AI Art and Sustainability</h2>
+    <p>Can generative art help reduce waste and promote sustainable digital practices?</p>
+    <p>We explore how algorithms can optimize resources, minimize physical production, and rethink traditional art consumption for a greener future.</p>
+    <img src="img/sustainability.jpg" alt="Sustainability in AI art" style="max-width: 100%; margin-top: 2rem; border-radius: 10px;">
+  </section>
+
+  <section id="about" class="section light">
+    <h2>About Fast Art</h2>
+    <p>
+      Fast Art is a digital space where AI-generated creativity blurs the line between code and canvas. Inspired by human intuition and machine learning, we explore how algorithms redefine what it means to make and value art.
+    </p>
+
+    <h3 style="margin-top: 3rem;">Which of these artworks is AI generated?</h3>
+    <div class="quiz-container">
+      <div class="quiz-option" data-correct="false">
+        <img src="img/art1.jpg" alt="Artwork A">
+      </div>
+      <div class="quiz-option" data-correct="true">
+        <img src="img/aiart1.jpg" alt="Artwork B">
+      </div>
+    </div>
+    <div style="margin-top: 1rem;">
+      <button class="btn submit-btn" disabled>Submit Answer</button>
+      <button class="btn reset-btn" style="margin-left: 1rem;">Reset Quiz</button>
+    </div>
+
+    <h3 style="margin-top: 4rem;">Which of these arts are AI-generated?</h3>
+    <div class="image-reveal" id="imageReveal">
+      <img src="img/art2.jpg" alt="Base Artwork" class="reveal-image bg">
+      <img src="img/aiart2.jpg" alt="AI Artwork" class="reveal-image fg" id="fgImage">
+      <div class="reveal-handle" id="revealHandle"></div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>Get in touch to collaborate, inquire, or simply say hello.</p>
+    <a class="btn" href="mailto:kimencarnacion024@gmail.com">Email Us</a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Fast Art. Inspired by the spirit of digital creation.</p>
+  </footer>
+
+  <script>
+    const options = document.querySelectorAll('.quiz-option');
+    const submitBtn = document.querySelector('.submit-btn');
+    const resetBtn = document.querySelector('.reset-btn');
+    let selectedOption = null;
+
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        options.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        selectedOption = option;
+        submitBtn.classList.add('enabled');
+        submitBtn.disabled = false;
+      });
+    });
+
+    submitBtn.addEventListener('click', () => {
+      if (!selectedOption) return;
+      options.forEach(option => {
+        option.classList.remove('correct', 'incorrect');
+        const isCorrect = option.getAttribute('data-correct') === 'true';
+        if (option === selectedOption && isCorrect) {
+          option.classList.add('correct');
+        } else if (option === selectedOption && !isCorrect) {
+          option.classList.add('incorrect');
+        } else if (isCorrect) {
+          option.classList.add('correct');
+        }
+      });
+      options.forEach(option => option.style.pointerEvents = 'none');
+      submitBtn.disabled = true;
+      submitBtn.classList.remove('enabled');
+    });
+
+    resetBtn.addEventListener('click', () => {
+      options.forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
+        opt.style.pointerEvents = 'auto';
+      });
+      selectedOption = null;
+      submitBtn.disabled = true;
+      submitBtn.classList.remove('enabled');
+    });
+
+    const imageReveal = document.getElementById('imageReveal');
+    const fgImage = document.getElementById('fgImage');
+    const handle = document.getElementById('revealHandle');
+    let isDragging = false;
+
+    imageReveal.addEventListener('mousedown', () => isDragging = true);
+    document.addEventListener('mouseup', () => isDragging = false);
+    imageReveal.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = imageReveal.getBoundingClientRect();
+      let offsetX = e.clientX - rect.left;
+      offsetX = Math.max(0, Math.min(offsetX, rect.width));
+      const percent = (offsetX / rect.width) * 100;
+      fgImage.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+      handle.style.left = `${percent}%`;
+    });
+
+    window.addEventListener('load', () => {
+      fgImage.style.clipPath = 'inset(0 50% 0 0)';
+      handle.style.left = '50%';
+    });
+  </script>
+
+</body>
+</html>
