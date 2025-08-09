@@ -33,15 +33,15 @@
   </section>
 
   <section id="gallery" class="section">
-    <h2>Featured Works</h2>
-    <p>Pictures I took of the art from some of my favourite artists in the Somerset House</p>
+    <h2>My personal favourite art pieces</h2>
+    <p>Pictures I took of the art from some of my favourite artists</p>
     <div class="grid">
-      <div class="gallery-item"><img src="img/heart.jpg"><div class="overlay"><a href="#" class="overlay-link">View Heart</a></div></div>
-      <div class="gallery-item"><img src="img/jnese.jpg"><div class="overlay"><a href="#" class="overlay-link">View JNESE</a></div></div>
-      <div class="gallery-item"><img src="img/kitty.jpg"><div class="overlay"><a href="#" class="overlay-link">View Kitty</a></div></div>
-      <div class="gallery-item"><img src="img/monster.jpg"><div class="overlay"><a href="#" class="overlay-link">View Monster</a></div></div>
-      <div class="gallery-item"><img src="img/muse.jpg"><div class="overlay"><a href="#" class="overlay-link">View Muse</a></div></div>
-      <div class="gallery-item"><img src="img/paint.jpg"><div class="overlay"><a href="#" class="overlay-link">View Paint</a></div></div>
+      <div class="gallery-item"><img src="img/heart.jpg"><div class="overlay"><a href="https://www.prestigeonline.com/th/people/toru-soeya-sonny-angel-dreams/" class="overlay-link">Toru Soeya</a></div></div>
+      <div class="gallery-item"><img src="img/jnese.jpg"><div class="overlay"><a href="https://www.perrotin.com/artists/Aya_Takano/15#news" class="overlay-link">Aya Takano</a></div></div>
+      <div class="gallery-item"><img src="img/yn.jpg"><div class="overlay"><a href="https://www.yoshitomonara.com/" class="overlay-link">Yoshimoto Nara</a></div></div>
+      <div class="gallery-item"><img src="img/ma.jpg"><div class="overlay"><a href="https://www.michelangelo.org/" class="overlay-link">Michael Angelo</a></div></div>
+      <div class="gallery-item"><img src="img/muse.jpg"><div class="overlay"><a href="https://japanesekawaiiculture.com/rune-naito-and-the-roots-of-kawaii/" class="overlay-link">Naito Rune</a></div></div>
+      <div class="gallery-item"><img src="img/paint.jpg"><div class="overlay"><a href="https://www.juxtapoz.com/news/magazine/features/alake-shilling-the-lucky-ladybugs/" class="overlay-link">Alake Shilling</a></div></div>
     </div>
   </section>
 
@@ -50,11 +50,11 @@
     <div class="features-grid">
       <article class="feature-card">
         <h3>The ethics behind AI-generated Art</h3>
-        <p>Exploring the creative boundaries and legal questions of AI-generated imagery.</p>
+        <p>Exploring the creative boundaries and questions of AI-generated imagery.</p>
         <a href="#">Read more →</a>
       </article>
       <article class="feature-card">
-        <h3>Societal perspective with the use of AI and authorship</h3>
+        <h3>Perspective with the use of AI and authorship</h3>
         <p>How artificial creativity reflects—and sometimes reshapes—social biases.</p>
         <a href="#">Read more →</a>
       </article>
@@ -88,18 +88,23 @@
       <button class="btn reset-btn" style="margin-left: 1rem;">Reset Quiz</button>
     </div>
 
-    <h3 style="margin-top: 4rem;">Which of these arts are AI-generated?</h3>
+    <h3 style="margin-top: 4rem;">Which of these images are AI-generated?</h3>
     <div class="image-reveal" id="imageReveal">
       <img src="img/art2.jpg" alt="Base Artwork" class="reveal-image bg">
       <img src="img/aiart2.jpg" alt="AI Artwork" class="reveal-image fg" id="fgImage">
       <div class="reveal-handle" id="revealHandle"></div>
+    </div>
+
+    <div style="margin-top: 1rem;">
+      <button class="btn submit-btn-2">Submit Answer</button>
+      <button class="btn reset-btn-2" style="margin-left: 1rem;">Reset</button>
     </div>
   </section>
 
   <section id="contact" class="section">
     <h2>Contact</h2>
     <p>Get in touch to collaborate, inquire, or simply say hello.</p>
-    <a class="btn" href="mailto:kimencarnacion024@gmail.com">Email Us</a>
+    <a class="btn" href="mailto:kimencarnacion024@gmail.com">Email Me</a>
   </section>
 
   <footer>
@@ -111,6 +116,14 @@
     const submitBtn = document.querySelector('.submit-btn');
     const resetBtn = document.querySelector('.reset-btn');
     let selectedOption = null;
+
+    const imageReveal = document.getElementById('imageReveal');
+    const fgImage = document.getElementById('fgImage');
+    const handle = document.getElementById('revealHandle');
+    const submitBtn2 = document.querySelector('.submit-btn-2');
+    const resetBtn2 = document.querySelector('.reset-btn-2');
+    let isDragging = false;
+    let revealPercent = 50;
 
     options.forEach(option => {
       option.addEventListener('click', () => {
@@ -150,10 +163,22 @@
       submitBtn.classList.remove('enabled');
     });
 
-    const imageReveal = document.getElementById('imageReveal');
-    const fgImage = document.getElementById('fgImage');
-    const handle = document.getElementById('revealHandle');
-    let isDragging = false;
+    submitBtn2.addEventListener('click', () => {
+      const EDGE_TOLERANCE = 5;
+      imageReveal.classList.remove('correct', 'incorrect');
+      if (revealPercent <= EDGE_TOLERANCE) {
+        imageReveal.classList.add('correct');
+      } else if (revealPercent >= 100 - EDGE_TOLERANCE) {
+        imageReveal.classList.add('incorrect');
+      }
+    });
+
+    resetBtn2.addEventListener('click', () => {
+      imageReveal.classList.remove('correct', 'incorrect');
+      fgImage.style.clipPath = 'inset(0 50% 0 0)';
+      handle.style.left = '50%';
+      revealPercent = 50;
+    });
 
     imageReveal.addEventListener('mousedown', () => isDragging = true);
     document.addEventListener('mouseup', () => isDragging = false);
@@ -165,11 +190,13 @@
       const percent = (offsetX / rect.width) * 100;
       fgImage.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
       handle.style.left = `${percent}%`;
+      revealPercent = percent;
     });
 
     window.addEventListener('load', () => {
       fgImage.style.clipPath = 'inset(0 50% 0 0)';
       handle.style.left = '50%';
+      revealPercent = 50;
     });
   </script>
 
