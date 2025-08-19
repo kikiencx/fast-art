@@ -46,20 +46,20 @@
   </section>
 
   <section id="features" class="section light">
-    <h2>Feature Articles</h2>
-    <div class="features-grid">
-      <article class="feature-card">
-        <h3>The ethics behind AI-generated Art</h3>
-        <p>Exploring the creative boundaries and questions of AI-generated imagery.</p>
-        <a href="https://docs.google.com/document/d/e/2PACX-1vSjv_KayXGJ8ISZ2nud3ddQJjIB9ugfsYH7IiAifTp6UOpV_6O-0jwonyUoov3HfwU7ATi48WhB8rmf/pub">Read more →</a>
-      </article>
-      <article class="feature-card">
-        <h3>A Perspective with the use of AI and authorship</h3>
-        <p>How artificial creativity reflects and reshapes social biases.</p>
-        <a href="https://docs.google.com/document/d/e/2PACX-1vQvJSYFIefUzIb2wmIW_2vV_ByUzjzesGH5a0QMmUYAcsofwMaDtJsdw6v885G12Vxh6nCwzK-LcA47/pub">Read more →</a>
-      </article>
-    </div>
-  </section>
+  <h2>Feature Articles</h2>
+  <div class="features-grid">
+    <article class="feature-card">
+      <h3>The ethics behind AI-generated Art</h3>
+      <p>Exploring the creative boundaries and questions of AI-generated imagery.</p>
+      <a class="btn" href="feature-ethics-ai-art.html">Read more →</a>
+    </article>
+    <article class="feature-card">
+      <h3>A Perspective with the use of AI and authorship</h3>
+      <p>How artificial creativity reflects and reshapes social biases.</p>
+      <a class="btn" href="feature-ai-authorship.html">Read more →</a>
+    </article>
+  </div>
+</section>
 
   <section id="sustainability" class="section">
   <h2>AI Art and Sustainability in the UK</h2>
@@ -81,9 +81,7 @@
       <p>Policy action, public awareness and innovation are all needed to ensure that the future of AI-generated art is not only imaginative, but also environmentally responsible. Without this balance, the artistic freedom offered by AI may come at the expense of the ecosystems and resources we depend on.</p>
     </div>
   </div>
-  <img src="img/sustainability.jpg" alt="Sustainability in AI art" style="max-width: 100%; margin-top: 2rem; border-radius: 10px;">
 </section>
-
 
   <section id="quiz" class="section light">
     <h2>Quiz Time!</h2>
@@ -143,36 +141,55 @@
     let revealPercent = 50;
 
     options.forEach(option => {
-      option.addEventListener('click', () => {
-        options.forEach(opt => opt.classList.remove('selected'));
-        option.classList.add('selected');
-        selectedOption = option;
-        submitBtn.classList.add('enabled');
-        submitBtn.disabled = false;
-      });
-    });
-
-    submitBtn.addEventListener('click', () => {
-      if (!selectedOption) return;
-      options.forEach(option => {
-        option.classList.remove('correct', 'incorrect');
-        const isCorrect = option.getAttribute('data-correct') === 'true';
-        if (option === selectedOption && isCorrect) {
-          option.classList.add('correct');
-          const correctMessage = document.createElement('p');
-          correctMessage.textContent = "Correct!";
-          correctMessage.classList.add('correct-message');
-          option.appendChild(correctMessage);
-        } else if (option === selectedOption && !isCorrect) {
-          option.classList.add('incorrect');
-        } else if (isCorrect) {
-          option.classList.add('correct');
-        }
-      });
-      options.forEach(option => option.style.pointerEvents = 'none');
+  option.addEventListener('click', () => {
+    if (option.classList.contains('selected')) {
+      option.classList.remove('selected');
+      selectedOption = null;
       submitBtn.disabled = true;
       submitBtn.classList.remove('enabled');
-    });
+    } else {
+      options.forEach(opt => opt.classList.remove('selected'));
+      option.classList.add('selected');
+      selectedOption = option;
+      submitBtn.classList.add('enabled');
+      submitBtn.disabled = false;
+    }
+  });
+});
+
+    submitBtn.addEventListener('click', () => {
+  if (!selectedOption) return;
+  options.forEach(option => {
+    option.classList.remove('correct', 'incorrect');
+    const isCorrect = option.getAttribute('data-correct') === 'true';
+    if (option === selectedOption && isCorrect) {
+      option.classList.add('correct');
+      const correctMessage = document.createElement('p');
+      correctMessage.textContent = "Correct!";
+      correctMessage.classList.add('correct-message');
+      option.appendChild(correctMessage);
+    } else if (option === selectedOption && !isCorrect) {
+      option.classList.add('incorrect');
+    } else if (isCorrect) {
+      option.classList.add('correct');
+    }
+  });
+  options.forEach(option => option.style.pointerEvents = 'none');
+  submitBtn.disabled = true;
+  submitBtn.classList.remove('enabled');
+
+  if (!document.querySelector('.explanation-box-1')) {
+    const box = document.createElement('div');
+    box.className = 'explanation-box-1';
+    box.style.marginTop = '1rem';
+    box.style.padding = '1rem';
+    box.style.border = '1px solid #ccc';
+    box.style.borderRadius = '8px';
+    box.style.background = '#f9f9f9';
+    box.textContent = "On the left is the the original artwork which I drew by hand. Then, I used an AI tool to generate a version of it which is the image you see on the right. I took a picture of my artwork and put it into the prompt asking the AI tool to replicate the image experimenting with style transfer to see how AI would reinterpret my drawing.";
+    submitBtn.parentNode.appendChild(box);
+  }
+});
 
     resetBtn.addEventListener('click', () => {
       options.forEach(opt => {
@@ -189,14 +206,26 @@
     });
 
     submitBtn2.addEventListener('click', () => {
-      const EDGE_TOLERANCE = 5;
-      imageReveal.classList.remove('correct', 'incorrect');
-      if (revealPercent <= EDGE_TOLERANCE) {
-        imageReveal.classList.add('correct');
-      } else if (revealPercent >= 100 - EDGE_TOLERANCE) {
-        imageReveal.classList.add('incorrect');
-      }
-    });
+  const EDGE_TOLERANCE = 5;
+  imageReveal.classList.remove('correct', 'incorrect');
+
+  if (revealPercent <= EDGE_TOLERANCE) {
+    imageReveal.classList.add('correct');
+  } else if (revealPercent >= 100 - EDGE_TOLERANCE) {
+    imageReveal.classList.add('incorrect');
+  }
+  if (!document.querySelector('.explanation-box-2')) {
+    const box = document.createElement('div');
+    box.className = 'explanation-box-2';
+    box.style.marginTop = '1rem';
+    box.style.padding = '1rem';
+    box.style.border = '1px solid #ccc';
+    box.style.borderRadius = '8px';
+    box.style.background = '#f9f9f9';
+    box.textContent = "For this example, I painted the original artwork myself. Afterwards, I generated an AI version by submitting in an image of my painting into a prompt asking the bot to recreate the image exactly to compare how the AI bot differs from my own painting.";
+    submitBtn2.parentNode.appendChild(box);
+  }
+});
 
     resetBtn2.addEventListener('click', () => {
       imageReveal.classList.remove('correct', 'incorrect');

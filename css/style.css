@@ -238,12 +238,7 @@ footer {
   filter: none;
 }
 
-.quiz-option:hover img {
-  filter: blur(3px);
-}
-
 .quiz-option.selected img {
-  filter: blur(2px);
   outline: 4px solid #007bff;
 }
 
